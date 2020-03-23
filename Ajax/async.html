@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button">点击跳转</button><br>
+    <button id="user">获取用户信息</button>
+    <p id=info></p>
+
+    <button id="color">变色</button><br>
+
+    <button id="image">切换图片</button><br>
+    <img src="/Ajax/image/1.png" id="img" width="200" height="200" alt="">
+
+    <script>
+        //  console.log(document);   document是html页面
+        // Math.floor() 返回小于或等于一个给定数字的最大整数 向下取整
+        var image=document.getElementById("image");
+        image.addEventListener('click',function(){
+            var num = Math.floor( Math.random() * 10 ) % 3 + 1;
+            console.log(num);
+            var img = "/Ajax/image/" + num + '.png';
+            document.getElementById("img").setAttribute("src",img);
+        })
+
+        var color=document.getElementById("color");
+        color.addEventListener('click',function(){
+            this.style.backgroundColor = 'red';  
+        })
+
+        var aaa =document.getElementById("button");
+        aaa.addEventListener('click',function(a){
+            window.location="https://baidu.com";
+        })
+
+        //获取节点
+        var user =document.getElementById("user");
+        //给节点绑定点击事件
+        user.addEventListener('click',function(e){
+            //异步
+            var httpRequest = new XMLHttpRequest();
+            // console.log(httpRequest);
+            //处理服务端的响应
+            httpRequest.onreadystatechange = function(){
+                //首先放到onreadystatechange里面
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        //请求成功走这里
+                        var data_str=httpRequest.responseText;  //获取的是json文本
+                        var data_json=JSON.parse(data_str);     //转成json对象
+                        var name=data_json.data.name;
+                        document.getElementById("info").innerHTML=name;  //显示文本
+                    } else {
+                        //请求失败走这里
+                    }
+                } else {
+                    // Not ready yet.
+                }
+            };
+
+            //get方式 请求
+            httpRequest.open('GET', '/Ajax/async.php', true);
+            httpRequest.send();
+        })      
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <b>setInterval定时器：实现轮询</b><br>
+    订单：12345321324正在处理，请稍等<br>
+    <button id="clear">清除定时器</button>
+
+    <script>
+        //清除定时器
+        var clear =document.getElementById("clear");
+        clear.addEventListener('click',function(){
+            clearInterval(clearss);
+        })
+        //定时器
+        // setInterval(function(){
+        //     console.log(Math.random());
+        // },1000);   
+
+        var clearss = setInterval(dsq,5000);
+        function dsq(){
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function(){
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        //请求成功 处理响应数据 json或XML 文本
+                        var data_str=httpRequest.responseText;
+                        // console.log(data_str);
+                        //将json文本转为 json对象
+                        var json_obj=JSON.parse(data_str);
+                        // console.log("错误码"+json_obj.error);
+                        // console.log("支付状态"+json_obj.data.status);
+                        var pay_status=json_obj.data.status;
+                        if(pay_status ==1){
+                            alert("支付成功");
+                            window.location='https://baidu.com';
+                        }else{
+
+                        }
+                    } else {
+
+                    }
+                } else {
+                    // Not ready yet.
+                }
+            };
+            httpRequest.open('GET', '/Ajax/order.php', true);
+            httpRequest.send();
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <b>websocket</b><br>
+    
+    <input type="text" id="msg"><br>
+    <button id="button">发送</button>
+<script>
+    //建立websocket连接               //如果这里是域名 端口就不用写了 服务器端的端口写 80 
+    const socket = new WebSocket('ws://192.168.118.90:9501');
+
+    //建立连接事件  在这里发送数据   
+    socket.addEventListener('open', function (event) {
+        //向服务器发送数据
+        document.getElementById("button").addEventListener('click',function(){
+            //获取input框里的内容
+            var msg =document.getElementById("msg").value;
+            socket.send(msg);
+        })
+
+    });
+
+    //监听服务器消息 （当服务器向客户端发送消息时 触发）
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+    });
+</script>
+    
+</body>
+</html>
